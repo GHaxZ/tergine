@@ -17,5 +17,5 @@ typedef struct {
 
 // Add an object for the specfied canvas at the specified position, returns
 // TER_RES
-TerResult can_addobj(Canvas *canvas, Object *object, Position position);
+TerResult CanvasAddObject(Canvas *canvas, Object *object, Position position);
 #endif // !CANVAS_H
