@@ -5,6 +5,7 @@
 // Object which can be drawn on a canvas
 typedef struct {
   Dimension dimension;
+  Position position;
   char **content;
   int color;
 } Object;
