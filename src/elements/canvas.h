@@ -5,15 +5,14 @@
 
 // Canvas where objects can be placed
 typedef struct {
-  int width;
-  int height;
+  Dimension dimension;
   int objectc;
   Object *objects;
 } Canvas;
 
 // Macro for canvas with specified width and height
 #define CANVAS(WIDTH, HEIGHT)                                                  \
-  (Canvas) { .width = WIDTH, .height = HEIGHT }
+  (Canvas) { DIMENSION(WIDTH, HEIGHT) }
 
 // Add an object for the specfied canvas at the specified position, returns
 // TER_RES

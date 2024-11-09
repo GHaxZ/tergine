@@ -1,10 +1,10 @@
 #ifndef OBJECT_H
 #define OBJECT_H
+#include "../types.h"
 
 // Object which can be drawn on a canvas
 typedef struct {
-  int width;
-  int height;
+  Dimension dimension;
   char **content;
   int color;
 } Object;
