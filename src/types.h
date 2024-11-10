@@ -19,6 +19,17 @@ typedef struct {
   int height;
 } Dimension;
 
+// RGB Color
+typedef struct {
+  unsigned char r;
+  unsigned char g;
+  unsigned char b;
+} Color;
+
+//  TODO: Finish color definitions and conversion
+#define COLOR(R, G, B)                                                         \
+  (Color) { .r = R, .g = G, .b = B }
+
 // Macro for creating a position
 #define POSITION(X, Y)                                                         \
   (Position) { .x = X, .y = Y }

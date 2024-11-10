@@ -16,6 +16,7 @@ static bool running = false;
 
 // Private functions
 // Draws the current canvas to the screen
+//  TODO: Figure out why nothing is being displayed
 void screenDraw() {}
 
 // The main loop which keeps the screen refreshing
