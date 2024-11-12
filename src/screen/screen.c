@@ -40,8 +40,8 @@ void screenDraw() {
 // The main loop which keeps the screen refreshing
 void screenLoop(void (*callback)()) {
   while (running) {
-    screenDraw();
     callback();
+    screenDraw();
 
     usleep(redrawInterval);
   }
