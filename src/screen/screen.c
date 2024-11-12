@@ -4,9 +4,10 @@
 #include <signal.h>
 #include <stddef.h>
 #include <stdlib.h>
+#include <string.h>
 #include <unistd.h>
 
-static ScreenConfig screenConfig = {.fps = 0};
+static ScreenConfig screenConfig = {.fps = 20};
 static Canvas *screenCanvas = NULL;
 
 // Interval between screen redraws in microseconds
@@ -16,20 +17,38 @@ static bool running = false;
 
 // Private functions
 // Draws the current canvas to the screen
-//  TODO: Figure out why nothing is being displayed
-void screenDraw() {}
+void screenDraw() {
+  if (screenCanvas == NULL) {
+    return;
+  }
+
+  clear();
+
+  for (int x = 0; x < screenCanvas->objectCount; x++) {
+    Object *obj = &screenCanvas->objects[x];
+
+    int i = 0;
+    while (obj->content[i] != NULL) {
+      mvprintw(obj->position.y + i, obj->position.x, "%s", obj->content[i]);
+      i++;
+    }
+  }
+
+  refresh();
+}
 
 // The main loop which keeps the screen refreshing
-void screenLoop() {
+void screenLoop(void (*callback)()) {
   while (running) {
     screenDraw();
+    callback();
 
     usleep(redrawInterval);
   }
 }
 
 // Public functions
-void ScreenInit(ScreenConfig config) {
+void ScreenRun(void (*callback)()) {
   atexit(ScreenExit);
   signal(SIGSEGV, ScreenExit);
   signal(SIGABRT, ScreenExit);
@@ -37,6 +56,8 @@ void ScreenInit(ScreenConfig config) {
   setlocale(LC_ALL, ""); // Set locale to support UTF-8
 
   initscr();             // Initialize the window
+  start_color();         // Enable colors
+  use_default_colors();  // Use default terminal background color
   noecho();              // Don't echo keypresses
   set_escdelay(0);       // Don't delay the ESC key;
   keypad(stdscr, true);  // Recognize function keys
@@ -46,12 +67,9 @@ void ScreenInit(ScreenConfig config) {
 
   clear();
 
-  screenConfig = config;
-  ScreenSetFps(config.fps);
-
   running = true;
 
-  screenLoop();
+  screenLoop(callback);
 }
 
 void ScreenSetCanvas(Canvas *canvas) { screenCanvas = canvas; }

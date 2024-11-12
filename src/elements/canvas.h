@@ -14,8 +14,11 @@ typedef struct {
 
 // Macro for canvas with specified width and height
 #define CANVAS(WIDTH, HEIGHT)                                                  \
-  (Canvas) { DIMENSION(WIDTH, HEIGHT) }
+  (Canvas){.size = DIMENSION(WIDTH, HEIGHT),                                   \
+           .objectCount = 0,                                                   \
+           .objects = NULL,                                                    \
+           .objectsLen = 0}
 
-// Add an object on the specfied canvas returns TER_REScan
+// Add an object on the specfied canvas returns TER_RES
 TerResult CanvasAddObject(Canvas *canvas, Object *object);
 #endif // !CANVAS_H

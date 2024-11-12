@@ -7,8 +7,8 @@ typedef struct {
   unsigned int fps;
 } ScreenConfig;
 
-// Initialize the Screen and input handling
-void ScreenInit(ScreenConfig config);
+// Run the Screen loop, calling the callback function every frame
+void ScreenRun(void (*callback)());
 
 // Set the canvas which will be drawn by the screen
 void ScreenSetCanvas(Canvas *canvas);

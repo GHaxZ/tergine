@@ -6,18 +6,15 @@
 #include <string.h>
 
 TerResult CanvasAddObject(Canvas *canvas, Object *object) {
-  if (canvas->objectCount >= canvas->objectsLen) {
+  if (canvas->objects == NULL || canvas->objectCount >= canvas->objectsLen) {
     int newLen = (canvas->objectsLen == 0) ? 4 : canvas->objectsLen * 2;
 
-    Object *newObjects = malloc((newLen) * sizeof(Object));
+    Object *newObjects = realloc(canvas->objects, newLen * sizeof(Object));
     if (newObjects == NULL) {
       return TerErr;
     }
 
-    memcpy(newObjects, canvas->objects, canvas->objectCount * sizeof(Object));
-
-    free(canvas->objects);
-
+    canvas->objects = newObjects;
     canvas->objectsLen = newLen;
   }
 
