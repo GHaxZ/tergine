@@ -3,4 +3,8 @@
 
 bool IsPressed(int key) { return Pressed() == key; }
 
-int Pressed() { return getch(); }
+int Pressed() {
+  int pressed = getch();
+  flushinp();
+  return pressed;
+}
