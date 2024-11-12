@@ -8,7 +8,7 @@
 typedef struct {
   Dimension size;
   int objectCount;
-  Object *objects;
+  Object **objects;
   size_t objectsLen;
 } Canvas;
 

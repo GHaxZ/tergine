@@ -10,15 +10,8 @@
 Canvas canvas = CANVAS(20, 10);
 
 Object obj = OBJECT(POSITION(6, 3),
-                    CONTENT("╔════════════════╗", //
-                            "║                ║", //
-                            "║                ║", //
-                            "║                ║", //
-                            "║                ║", //
-                            "║                ║", //
-                            "║                ║", //
-                            "║                ║", //
-                            "╚════════════════╝"),
+                    CONTENT("  /\\",   //
+                            "< -- >"), //
                     COLOR(255, 0, 0));
 
 void gameLoop() {
@@ -27,6 +20,18 @@ void gameLoop() {
   switch (input) {
   case 'q':
     ScreenExit();
+    break;
+  case KEY_UP:
+    obj.position.y -= 1;
+    break;
+  case KEY_LEFT:
+    obj.position.x -= 2;
+    break;
+  case KEY_DOWN:
+    obj.position.y += 1;
+    break;
+  case KEY_RIGHT:
+    obj.position.x += 2;
     break;
   }
 }

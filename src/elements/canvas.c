@@ -6,10 +6,10 @@
 #include <string.h>
 
 TerResult CanvasAddObject(Canvas *canvas, Object *object) {
-  if (canvas->objects == NULL || canvas->objectCount >= canvas->objectsLen) {
-    int newLen = (canvas->objectsLen == 0) ? 4 : canvas->objectsLen * 2;
+  if (canvas->objectCount >= canvas->objectsLen) {
+    size_t newLen = (canvas->objectsLen == 0) ? 4 : canvas->objectsLen * 2;
 
-    Object *newObjects = realloc(canvas->objects, newLen * sizeof(Object));
+    Object **newObjects = realloc(canvas->objects, newLen * sizeof(Object *));
     if (newObjects == NULL) {
       return TerErr;
     }
@@ -18,31 +18,31 @@ TerResult CanvasAddObject(Canvas *canvas, Object *object) {
     canvas->objectsLen = newLen;
   }
 
-  canvas->objects[canvas->objectCount] = *object;
-
+  canvas->objects[canvas->objectCount] = object; // Store pointer
   canvas->objectCount++;
 
   return TerOk;
 }
 
 TerResult CanvasRemoveObject(Canvas *canvas, Object *object) {
-  int objPos = 0;
+  int objPos = -1;
 
-  while (objPos < canvas->objectCount) {
-    Object *canvasObj = &canvas->objects[objPos];
-
-    if (object == canvasObj) {
-      for (int x = objPos; x < canvas->objectCount - 1; x++) {
-        canvas->objects[x] = canvas->objects[x + 1];
-      }
-
-      canvas->objectCount--;
-
-      return TerOk;
+  for (int i = 0; i < canvas->objectCount; i++) {
+    if (canvas->objects[i] == object) {
+      objPos = i;
+      break;
     }
-
-    objPos++;
   }
 
-  return TerErr;
+  if (objPos == -1) {
+    return TerErr;
+  }
+
+  for (int i = objPos; i < canvas->objectCount - 1; i++) {
+    canvas->objects[i] = canvas->objects[i + 1];
+  }
+
+  canvas->objectCount--;
+
+  return TerOk;
 }

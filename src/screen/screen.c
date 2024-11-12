@@ -25,7 +25,7 @@ void screenDraw() {
   clear();
 
   for (int x = 0; x < screenCanvas->objectCount; x++) {
-    Object *obj = &screenCanvas->objects[x];
+    Object *obj = screenCanvas->objects[x];
 
     int i = 0;
     while (obj->content[i] != NULL) {
