@@ -5,6 +5,7 @@
 
 typedef struct {
   unsigned int fps;
+  Canvas *canvas;
 } ScreenConfig;
 
 // Run the Screen loop, calling the callback function every frame

@@ -8,8 +8,8 @@
 #include <string.h>
 #include <unistd.h>
 
-static ScreenConfig screenConfig = {.fps = 20};
-static Canvas *screenCanvas = NULL;
+static ScreenConfig screenConfig = {
+    .fps = 20, .canvas = NULL}; // Include canvas in ScreenConfig
 
 // Interval between screen redraws in microseconds
 static int redrawInterval = 0;
@@ -19,17 +19,17 @@ static bool running = false;
 // Private functions
 // Draws the current canvas to the screen
 void screenDraw() {
-  if (screenCanvas == NULL) {
+  if (screenConfig.canvas == NULL) {
     return;
   }
 
-  int canvasWidth = screenCanvas->size.width;
-  int canvasHeight = screenCanvas->size.height;
+  int canvasWidth = screenConfig.canvas->size.width;
+  int canvasHeight = screenConfig.canvas->size.height;
 
   clear();
 
-  for (int x = 0; x < screenCanvas->objectCount; x++) {
-    Object *obj = screenCanvas->objects[x];
+  for (int x = 0; x < screenConfig.canvas->objectCount; x++) {
+    Object *obj = screenConfig.canvas->objects[x];
 
     int i = 0;
     while (obj->content[i] != NULL) {
@@ -63,7 +63,7 @@ void screenDraw() {
         len = (int)fmax(canvasWidth - posX, 0);
       }
 
-      // Check if the is something to draw
+      // Check if there is something to draw
       if (len > 0) {
         mvprintw(posY, posX, "%.*s", (int)len, content);
       }
@@ -110,7 +110,7 @@ void ScreenRun(void (*callback)()) {
   screenLoop(callback);
 }
 
-void ScreenSetCanvas(Canvas *canvas) { screenCanvas = canvas; }
+void ScreenSetCanvas(Canvas *canvas) { screenConfig.canvas = canvas; }
 
 void ScreenSetFps(unsigned int fps) {
   screenConfig.fps = fps;
