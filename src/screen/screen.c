@@ -1,5 +1,6 @@
 #include "screen.h"
 #include "locale.h"
+#include <math.h>
 #include <ncurses.h>
 #include <signal.h>
 #include <stddef.h>
@@ -22,6 +23,9 @@ void screenDraw() {
     return;
   }
 
+  int canvasWidth = screenCanvas->size.width;
+  int canvasHeight = screenCanvas->size.height;
+
   clear();
 
   for (int x = 0; x < screenCanvas->objectCount; x++) {
@@ -29,7 +33,41 @@ void screenDraw() {
 
     int i = 0;
     while (obj->content[i] != NULL) {
-      mvprintw(obj->position.y + i, obj->position.x, "%s", obj->content[i]);
+      char *content = obj->content[i];
+      size_t len = strlen(content);
+
+      int posY = obj->position.y + i;
+      // Truncate object in case its position makes it go outside of canvas
+      if (posY < 0 || posY >= canvasHeight) {
+        i++;
+        continue;
+      }
+
+      int posX = obj->position.x;
+      // Truncate object content in case it has negative x-position
+      if (posX < 0) {
+        int rem = -posX;
+        if ((size_t)rem < len) {
+          content = &content[rem];
+          len -= rem;
+        } else {
+          content = "";
+          len = 0;
+        }
+        posX = 0;
+      }
+
+      // Truncate right part of string in case it exceeds canvas width
+      if (posX + len > canvasWidth) {
+        // Make sure length does not go negative
+        len = (int)fmax(canvasWidth - posX, 0);
+      }
+
+      // Check if the is something to draw
+      if (len > 0) {
+        mvprintw(posY, posX, "%.*s", (int)len, content);
+      }
+
       i++;
     }
   }

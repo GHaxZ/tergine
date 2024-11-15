@@ -4,7 +4,7 @@
 BINARY="tergine"
 OUT_PATH="./out/$BINARY"
 SRC_PATH="./src/"
-LIBRARIES=("ncursesw")
+LIBRARIES=("ncursesw" "m")
 
 # Create output directory if it doesn't exist
 mkdir -p "$(dirname "$OUT_PATH")"
