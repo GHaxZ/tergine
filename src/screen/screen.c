@@ -117,6 +117,14 @@ void ScreenSetFps(unsigned int fps) {
   redrawInterval = 1000000 / fps;
 }
 
+TerResult ScreenBeep() {
+  if (beep() == ERR) {
+    return TerErr;
+  }
+
+  return TerOk;
+}
+
 void ScreenExit() {
   running = false;
   endwin();

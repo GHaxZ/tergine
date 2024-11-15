@@ -21,6 +21,9 @@ void gameLoop() {
   case 'q':
     ScreenExit();
     break;
+  case 'b':
+    ScreenBeep();
+    break;
   case KEY_UP:
     obj.position.y -= 1;
     break;
